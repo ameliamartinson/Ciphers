@@ -3,19 +3,21 @@ import numpy as np
 
 cipher = "DCSTUZAVBABCJDNLFALEDECGFLHHTEOHZZZXFNBRJBOITQIVTPWYSPWSNXORJNUXJZHMOEBIQCYWFYWIPQUHWPLWBCCEMMYLBGCSSXIVFRYRFCUPMJWVZANSHCUTIJCWBMIYUNIRTELYDECRHLHHBYUPZKCRHALSUZWSMDNLBEJVFGYRUEBMSOJESECITZLXIPJYCWCGGCIQSPUHJYATSTPEUPGITDUKFDGSEPLRDCSTUZAVBABCFICWUDUXUSYMOEYVTPWXJZHSGEBIETMGJAFMOPMSGXUXIPGEUTWWDZGTVEYVTNCIONYMOQIVNLNMPYMIDFLMUJYPFNNVJNUPFYAMOPYVJYAHJRCXBWMMHYUPQCIGFDMMORJLZDCGTLHHPEBISDWSSPWSONYTUDLIMLNIEEIMOQIVNLNMPYMIDFLMUJXEULWSOQCHFYNMBWCXZOUXBTHXFRLMUJUYUSYRUTWEUTIRBYXRPYLIQFXMBECSOLLIBWMSDPHXSLFXPNLCQEIKSLJLZALEDECGBWUTQWCGBECSODIJDCSTUZAVBABCJYWPVOYIMPWXSZHMDNIQNPLGFNBMQMUWFOJEZXYRUNUVEDXMHTNEMNOVSPHGJPMGPXJYUPLTBDMAPCXWBYXQJWCXBCSGPXGYOTWEUTIRTNLCQEIKSLJLZALMPCNSUSYQPOYVOLAIXLMIGQYGUTPIMJMCOZHCNZOWXTNLFYWVZANMPYWSOGYVUTHKSPUHBMFIJYZSSXUXJZHTMLCRUPRXUZORJYNIMWCKJMFIOZHWFYMIUPRXDTJLFCNIYEQLJNBGBYIRMJVISPUHCJLIWPLWJYAXIPJVPNYWTOYGSJJXJZHXIPMIOOYVPQURFYWVZANIENIHFOGITDUKFDBESPMXIPXIDCSTUTIREPWSETHKUPWLO"
 
-indices = [index for index in range(len(cipher)) if cipher.startswith("DCSTU",index)]
+indices = [index for index in range(len(cipher)) if cipher.startswith("DCSTU", index)]
 print(indices)
 # [0, 232, 544, 900]
 
-print(np.gcd(544-232, 900 - 544))
+print(np.gcd(544 - 232, 900 - 544))
 # 4
+
 
 def iOC(string):
     n = len(string)
     total = 0
     for let in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
-        total += string.count(let)**2 / n**2
+        total += string.count(let) ** 2 / n**2
     return total
+
 
 def toNumeric(string):
     numbers = []
@@ -25,6 +27,7 @@ def toNumeric(string):
 
     return numbers
 
+
 def toText(numbers):
     string = ""
     lets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -33,12 +36,13 @@ def toText(numbers):
 
     return string
 
-y = ["","","",""]
+
+y = ["", "", "", ""]
 for i in range(len(cipher)):
     y[i % 4] = y[i % 4] + cipher[i]
 
 
-def shiftCipher(string,key): #decrypt shift
+def shiftCipher(string, key):  # decrypt shift
     plain = toNumeric(string)
     key_num = toNumeric(key)[0]
     cipher = []
@@ -46,6 +50,8 @@ def shiftCipher(string,key): #decrypt shift
         cipher.append((i - key_num) % 26)
     cipherText = toText(cipher)
     return cipherText
+
+
 def P(i):
     mydict = {
         0: 0.082,
@@ -77,7 +83,8 @@ def P(i):
     }
     return mydict[i]
 
-def mG(text,g):
+
+def mG(text, g):
     n = len(text)
     total = 0
     for i in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
@@ -86,15 +93,59 @@ def mG(text,g):
         total += p_i * f_i / n
     return total
 
+
+delt = 100000
+let = -1
 for g in range(26):
-    print(g, ": ", mG(y[3],g))
+    myval = mG(y[0], g)
+    if np.abs(myval - 0.065) < delt:
+        delt = np.abs(myval - 0.065)
+        let = g
+    # print(toText([g]), ": ", mG(y[0], g))
+print(toText([let]))
+delt = 100000
+let = -1
+for g in range(26):
+    myval = mG(y[1], g)
+    if np.abs(myval - 0.065) < delt:
+        delt = np.abs(myval - 0.065)
+        let = g
+    # print(toText([g]), ": ", mG(y[0], g))
+print(toText([let]))
+delt = 100000
+let = -1
+for g in range(26):
+    myval = mG(y[2], g)
+    if np.abs(myval - 0.065) < delt:
+        delt = np.abs(myval - 0.065)
+        let = g
+    # print(toText([g]), ": ", mG(y[0], g))
+print(toText([let]))
+delt = 100000
+let = -1
+for g in range(26):
+    myval = mG(y[3], g)
+    if np.abs(myval - 0.065) < delt:
+        delt = np.abs(myval - 0.065)
+        let = g
+    # print(toText([g]), ": ", mG(y[0], g))
+print(toText([let]))
+# print("Second Letter: (IOC~0.065)")
+# for g in range(26):
+#    print(toText([g]), ": ", mG(y[1], g))
+# print("Third Letter: (IOC~0.065)")
+# for g in range(26):
+#    print(toText([g]), ": ", mG(y[2], g))
+# print("Fourth Letter: (IOC~0.065)")
+# for g in range(26):
+#    print(toText([g]), ": ", mG(y[3], g))
 
 # BLUE
 
 key = "BLUE"
 p = []
 for i in range(len(key)):
-   p.append(shiftCipher(y[i],key[i]))
+    p.append(shiftCipher(y[i], key[i]))
 
 plain = ""
 for i in range(len(cipher)):
